@@ -1,0 +1,661 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0054)http://www.physics.mcmaster.ca/phy4d6/Lab/chapter3.htm -->
+<HTML><HEAD><TITLE>4D6 Lab Manual - Chapter 3</TITLE>
+<META http-equiv=Content-Type content=text/html;CHARSET=iso-8859-1>
+<META content=file:///C|/PHY4D6/Manual/Project.vpp name=VPSiteProject>
+<META content="MSHTML 6.00.2800.1141" name=GENERATOR></HEAD>
+<BODY text=black vLink=#551a8b aLink=red link=blue bgColor=white>
+<H1 align=center><FONT size=5>Chapter 3</FONT></H1>
+<H1 align=center><STRONG><FONT size=5>Assembly Language Program 
+Development</FONT></STRONG></H1>
+<P>
+<TABLE cellSpacing=0 cellPadding=10 width="100%" bgColor=#ccffcc border=1>
+  <TBODY>
+  <TR>
+    <TD width="100%"><B>Objectives:</B> To demonstrate various concepts of 
+      assembly language programming and development using the 
+HC11.</TD></TR></TBODY></TABLE></P>
+<P>Topics covered:</P>
+<UL>
+  <LI><A 
+  href="http://www.physics.mcmaster.ca/phy4d6/Lab/chapter3.htm#Assembler">HC11 
+  Cross-assembler</A> 
+  <LI><A href="http://www.physics.mcmaster.ca/phy4d6/Lab/chapter3.htm#LCD">Using 
+  the LCD</A> 
+  <LI><A 
+  href="http://www.physics.mcmaster.ca/phy4d6/Lab/chapter3.htm#ASCII">ASCII</A> 
+  <LI><A 
+  href="http://www.physics.mcmaster.ca/phy4d6/Lab/chapter3.htm#SCI">Serial 
+  Communications Interface</A> 
+  <LI><A 
+  href="http://www.physics.mcmaster.ca/phy4d6/Lab/chapter3.htm#Interrupts">Interrupts</A> 
+
+  <LI><A 
+  href="http://www.physics.mcmaster.ca/phy4d6/Lab/chapter3.htm#Timer">Timer 
+  System</A> </LI></UL>
+<H3></H3>
+<H3>
+<HR align=center>
+Program Development</H3>
+<P>The traditional way of developing a program written in a high level language 
+such as BASIC, Fortran, C or Pascal, is to begin with an <B>editor</B> in order 
+to create a text file. This file is converted by a <B>source code compiler</B> 
+to produce <B>object code</B>. Finally, the object code is linked, loaded and 
+then executed. In most cases, the compiler first converts the source code to an 
+assembly language file and then an <B>assembler</B> converts the assembly code 
+into object code. This stage is usually hidden from the programmer. The entire 
+process can be view graphically as shown.</P>
+<P>
+<P align=center><IMG height=121 
+src="4D6 Lab Manual - Chapter 3_files/progdev.gif" width=584 align=bottom 
+border=0></P>
+<P><BR>Most programmers today use an <B>integrated develoment environment</B> 
+(IDE) where the entire process of editing, compiling and debugging is 
+drammatically less painful. One only has to type in the lines of code and then 
+click on the RUN button. In any case, the process still remains the same even if 
+it may be done automatically for you.</P>
+<P>There are two ways of creating and assembling HC11 programs. The first method 
+is to use an IDE software package. This IDE will allow you to edit, assemble and 
+download the HC11 programs from one utility. A simulator and debugger is in 
+development, so for now you will have to create your own techniques for 
+debugging programs. Note that this IDE uses the same assembler and loader that 
+are described below. </P>
+<P>
+<TABLE cellSpacing=0 cellPadding=10 width="100%" bgColor=#ccffcc border=1>
+  <TBODY>
+  <TR>
+    <TD width="100%">A Windows IDE package is available which will assist you 
+      in editing and assemblying your HC11 programs. A simulator and debugger 
+      will be added at a later date. The IDE expects the source file to have an 
+      extension of .ASM, though this is optional. To run the IDE, go to the 
+      folder named <B><FONT face="Arial, Helvetica">XASM</FONT></B> and open the 
+      file named <B><FONT 
+  face="Arial, Helvetica">winide32.exe</FONT></B>.</TD></TR></TBODY></TABLE></P>
+<P>If an IDE is not available, you have to resort to the traditional way of 
+first editing the source file using an editor such as Notepad, WordPad or any 
+text editor. The assembler is then invoked in order to translate the source code 
+into object code. 
+<H3>Editor</H3>
+<P>Any editor or word processor that produces a text file can be used to create 
+the source file. For our purposes the <B>Notepad</B> accessory works fine. This 
+program creates a text file and will, by default, assign a .TXT extension to the 
+filename. Filenames must not exceed eight characters in length.</P>
+<H3><A name=Assembler></A>Assembler</H3>
+<P>The HC11 assembler is called a <B>cross-assembler</B>, meaning that it is 
+written to run on a host computer (PC) which is different from the target 
+machine (MCU). The assembler is a DOS program and therefore must be executed 
+from a DOS window. The program name is <FONT 
+face="Courier New, Courier">XASM11</FONT>. To execute, type the following:</P>
+<P><FONT face="Courier New, Courier">XASM11 filename.txt</FONT></P>
+<P>where <FONT face="Courier New, Courier">filename.txt</FONT> is the name of 
+your text file you wish to assemble. Errors encountered by the assembler will be 
+displayed on the screen. At the same time, a listing file called <FONT 
+face="Courier New, Courier">filename.LST</FONT> will be saved to disk. You can 
+open and view this file in order to observe the memory addresses and machine 
+code generated by the assembler.</P>
+<H3>Loader</H3>
+<P>After you are satisfied that there are no syntax or other assembler errors, 
+you may then proceed to download the object code to your target MCU. To 
+accomplish this, assemble your file once again, only this time use the /L switch 
+in the command line to invoke the loading process.</P>
+<P><FONT face="Courier New, Courier">XASM11 filename.txt</FONT> /L</P>
+<P>You must always use the /L switch at the start of every programming session 
+or if you change to a different source file. After the first usage of the /L 
+switch, you can substantially speedup the downloading process by using the 
+update switch /U instead. In this case, only program bytes which have changed 
+will be programmed into the EEPROM of the target MCU. The command template to 
+use the update feature is:</P>
+<P><FONT face="Courier New, Courier">XASM11 filename.txt</FONT> /U</P>
+<P>
+<TABLE cellSpacing=0 cellPadding=10 width="100%" bgColor=#ccffff border=1>
+  <TBODY>
+  <TR>
+    <TD width="100%"><B>Tip:</B> Pressing <B>F3</B> will recall the last 
+      command line entered.</TD></TR></TBODY></TABLE><BR>After the machine code has 
+been transferred and written to the MCU's EEPROM, the MCU will be reset and 
+normal execution will begin. At anytime you may manually reset the MCU by 
+pressing the RESET button on the MCU developmental board.</P>
+<P>
+<H3>How the download procedure works</H3>
+<P>XASM11 assembles the source code to produce the listing and object code. It 
+then begins the downloading process by placing the HC11 MCU into a bootstrap 
+mode. A special bootstrap program on the MCU located at $BF40 is executed. This 
+program accepts sequential bytes from the serial input at 1200 baud and loads 
+them into SRAM starting at address $0000. The XASM11 loader takes advantage of 
+this process and transfers a binary loader program. After 256 bytes have been 
+transferred, the MCU starts executing from address $0000. At this point, the 
+binary loader takes over and programs the EEPROM with the information sent by 
+the cross-assembler.</P>
+<P>
+<H3>Debugging Tips</H3>
+<P>Without the aid of fancy debugging tools, it becomes quite a challenge to 
+debug a program, especially one that runs wayward. Here are some tips for 
+debugging your program.</P>
+<OL>
+  <LI>In the worst case, the program hangs at who knows where. A simple 
+  technique for monitoring the progress of code execution is to insert code that 
+  outputs a pulse to an output pin as in <A 
+  href="http://www.physics.mcmaster.ca/phy4d6/Lab/source/ex1.txt">Example 1</A>. 
+  You can even track which part of the code is being executed by outputting one, 
+  two, three pulses, etc., at different parts of the program and watching the 
+  signal on the oscilloscope. 
+  <LI>If your application uses a display then you can output test messages and 
+  data to the display. 
+  <LI>You can also output test messages and information via the serial interface 
+  and monitor the messages on a dumb terminal or a PC running a terminal 
+  emulator such as <FONT face="Courier New, Courier">Hypertrm</FONT>. 
+  <LI>The ultimate solution is to write a proper debugger that communicates with 
+  a dumb terminal when ever a non-maskable interrupt is requested. With such a 
+  program you can examine the contents of any register or memory address. 
+  <P></P></LI></OL>
+<H3>Programming Tips</H3>
+<OL>
+  <LI>If you cannot get your program to work, try reloading all bytes by using 
+  the /L switch. 
+  <LI>Also make sure that the name of the source file is no longer that 8 
+  characters and that you are assemblying the file with the correct name. 
+  <LI>Make sure that you always save the current version of the source file 
+  before assemblying. 
+  <LI>If you are using the X or Y index register to hold the base address of the 
+  block of I/O registers, make sure that you initialize the register when an 
+  interrupt service routine is called. 
+  <LI>You cannot program the EEPROM with code residing in the EEPROM. One 
+  solution is to store the EEPROM programming instructions in SRAM and execute 
+  the code from there. 
+  <LI>Place your debugged subroutines at low EEPROM addresses and put your new 
+  code and main program at the end of the code. By doing this, code that has 
+  been debugged and not likely to change will not get moved around in memory. 
+  This will speedup the downloading process. </LI></OL>
+<H3></H3>
+<H3>
+<HR align=center>
+Hardware Notes</H3>
+<H4>MC68HC811 Prototyping Board</H4>
+<P><IMG height=438 src="4D6 Lab Manual - Chapter 3_files/HC11proto.jpg" 
+width=463 align=bottom border=0></P>
+<P>The HC11 experimental board provides RS-232 serial access to the 
+microprocessor, a 16-character x 2-line liquid crystal display and an optional 4 
+x 4 (16-button) keypad. A schematic of this system is shown below.</P>
+<H4>LCD Unit</H4>
+<P>Software for controlling the LCD Unit has been written for you. Basically, 
+the LCD is interfaced in the 4-bit mode utilizing PD5-PD2 input/output lines. 
+Three output lines, PB2-PB0, are use to control the data interface with the LCD. 
+PB0 is used to generate the register select (RS) signal, PB1 is the read/write 
+(R/W) signal, and PB2 generates the clock signal (E).</P>
+<H4>Keypad</H4>
+<P>The optional keypad, or any other set of keys or push-buttons, are arranged 
+in a 4x4 matrix. That is, there can be a maximum of sixteen buttons arranged in 
+four rows by four columns. The keypad interface consists of four input/output 
+lines PD5-PD2 which are also shared with the LCD interface. When used for keypad 
+operation these lines are programmed for output and a high level must be 
+generated on one of four lines (let's assume columns) in sequential order. The 
+activated button can be determined by examining the 4-bit code read back from 
+the four rows using PA3-PA0 input lines, in conjunction with the scan signal 
+that was send out.</P>
+<P>Any key-scanning software must be able to detect key-down and key-up 
+occurances versus continuously pressed keys. It must also guard against switch 
+contact bounce.</P>
+<P><BR>The following signals are utilized on the HC11 developmental board.</P>
+<OL>
+  <P>PA0 - PA3, used to read the 4 x 4 keypad.</P>
+  <P>PB0 -PB2, used to send control signals to the LCD</P>
+  <P>PD0 - PD1, used for the serial interface</P>
+  <P>PD2 - PD5, used to interface with the LCD and keypad</P></OL>
+<P>Unused analog inputs and digital input/output lines are available for you to 
+use.</P>
+<P>
+<H4>Differences between MC68HC11A8 and MC68HC811E2</H4>
+<P>The Motorola MC68HC11A8 Technical Summary also applies to the MC68HC811E2 
+with the following exceptions.</P>
+<P>The MC68HC811E2 contains 2K bytes of EEPROM starting at address $F800.</P>
+<P>Port A pin 3 (PA3) serves multiple functions. After reset, data direction bit 
+3 (DDRA3), in the PACTL register is cleared to zero configuring PA3 as an input. 
+PA3 can then be used as an input capture 4 (IC4), by setting I4/O5 (bit 2) to 
+one in the PACTL register. The I4/O5 bit is configured to OC5 (cleared to zero) 
+on reset. If DDRA3 is configured as an output and IC4 is enabled, writes to PA3 
+causes edges on PA3 to result in input captures. The TOC5 Output Compare 5 
+Register has been renamed TI4O5.</P>
+<P>Timer Control Register 2 (TCTL2) has been expanded to accommodate input 
+capture 4 (IC4) on PA3. Bit 7 of TCTL2 is EDG4B and bit 6 of TCTL2 is EDG4A.</P>
+<P>See the <A href="http://www.physics.mcmaster.ca/phy4d6/Lab/HC11IO.htm" 
+target=_blank>HC11 I/O Register Table</A></P>
+<OL>
+  <P></P></OL>
+<H3>
+<HR align=center>
+<A name=LCD></A>Using the LCD</H3>
+<P>The HC11 develomental board comes equipped with a 2-line x 16-character 
+Liquid Crystal Display (LCD). Software required to interface to the LCD is 
+somewhat intricate and is therefore provided for your use. The hardware 
+interface consists of a 4-bit data bus using PD5 - PD2, and three control 
+signals RS, R/W and E controlled by PB0, PB1 and PB2 respectively. The LCD is 
+controlled by writing data into one of two registers, the instruction register 
+and the data register. Data written to the data register is assumed to be in 
+ASCII and the corresponding character is displayed. Writing to the instruction 
+register is used primarily for controlling the operation and display modes of 
+the LCD.</P>
+<P><A 
+href="http://www.physics.mcmaster.ca/phy4d6/Lab/source/example2.txt">Example 
+2</A> contains a working program broken into subroutines which will allow you to 
+display characters on the LCD. A list of the subroutine names and their 
+functions are shown below. Note that symbol names are case sensitive and must be 
+typed as shown. 
+<UL>
+  <P><FONT face="Courier New, Courier">LCDini</FONT> - initialize the LCD</P>
+  <P><FONT face="Courier New, Courier">LCDir</FONT> - send accumulator A to LCD 
+  instruction register</P>
+  <P><FONT face="Courier New, Courier">LCDdr</FONT> - send accumulator A to LCD 
+  data register</P>
+  <P><FONT face="Courier New, Courier">LCDclr</FONT> - clear the LCD</P>
+  <P><FONT face="Courier New, Courier">LCDtxt</FONT> - send text to LCD, where Y 
+  = addess of text</P>
+  <P><FONT face="Courier New, Courier">line1</FONT> - position cursor to start 
+  of line 1.</P>
+  <P><FONT face="Courier New, Courier">line2</FONT> - clear line2 and position 
+  cursor to start of line 2</P></UL>
+<P>Use <FONT face="Courier New, Courier">LCDini</FONT> at the start of the 
+progam before calling any other LCD subroutine. This should be called only once 
+in the program. Use <FONT face="Courier New, Courier">LCDdr</FONT> to output a 
+single ASCII character at the current cursor position on the display.</P>
+<P>
+<H3>
+<HR align=center>
+<A name=ASCII></A><A 
+href="http://www.physics.mcmaster.ca/phy4d6/Lab/ASCII.gif">ASCII TABLE</A></H3>
+<P>The letters of the alphabet, digits and punctuation marks are collectively 
+called alphanumeric characters. The <B>American Standard Code for Information 
+Interchange</B> (ASCII, pronounced "<I>askee</I>") is a 7-bit code used to 
+represent a standard set of alphanumeric characters. This code can represent 128 
+characters of which only about 96 are required for alphanumeric characters. The 
+remaining codes are used for special purposes such as line-feed, return, bell, 
+etc., which are usually not visible or printable. These are called <B>control 
+characters</B>. (Control characters are generated on the keyboard by holding the 
+<B>Ctrl</B> key down and then pressing another key).</P>
+<P>The smallest group of bits handled by most computers is 8 bits, that is, a 
+byte. With one byte it is possible to represent 256 characters. Many personal 
+computers use an extended ASCII, making use of the extra 128 codes to represent 
+special graphic symbols originating with the IBM PC. In order to accommodate 
+other languages, including Chinese and Japanese, a 16-bit representation called 
+<B>Unicode</B> is rapidly becoming the new standard.</P>
+<P>
+<H3>
+<HR align=center>
+<A name=SCI></A>Serial Communications Interface</H3>
+<P>The 68HC11 MCU comes with a full-duplex asynchronous Serial Communications 
+Interface (SCI) which is used to communicate with other computers and devices 
+using the RS-232 standard. For more information, see the section on <A 
+href="http://www.physics.mcmaster.ca/phy4d6/Lab/Chapter8.htm#Serial">Serial 
+Transmission</A> in Chapter 8.</P>
+<P><A href="http://www.physics.mcmaster.ca/phy4d6/Lab/Source/example3.txt" 
+target=code>Example 3</A> demonstrates how to setup the SCI, transmit and 
+receive characters. Observe that the program is interrupt driven when receiving 
+input characters. Characters received are placed into a buffer called <B><FONT 
+face="Courier New, Courier">sbuf</FONT></B> until a CR character is received. 
+When this occurs the bit named <B><FONT 
+face="Courier New, Courier">SDA</FONT></B> (serial data available) in the 
+variable named <B><FONT face="Courier New, Courier">flags</FONT></B> is set. The 
+main program loops continuously always checking the <B><FONT 
+face="Courier New, Courier">SDA</FONT></B> flag. When it finds <B><FONT 
+face="Courier New, Courier">SDA</FONT></B> to be set, the subroutine named 
+<B><FONT face="Courier New, Courier">input</FONT></B> is called where the 
+<B><FONT face="Courier New, Courier">SDA</FONT></B> flag is cleared and the 
+input buffer is processed.</P>
+<P>Here is a list of applicable subroutines.</P>
+<BLOCKQUOTE>
+  <P><FONT face="Courier New, Courier">SCIini</FONT> - initialize the SCI for 
+  9600 baud.</P>
+  <P><FONT face="Courier New, Courier">putc</FONT> - outputs the 8-bit character 
+  in accumulator A.</P>
+  <P><FONT face="Courier New, Courier">print</FONT> - outputs the text string, 
+  where Y = address of text</P>
+  <P><FONT face="Courier New, Courier">newln</FONT> - outputs CR/LF pair</P>
+  <P><FONT face="Courier New, Courier">space</FONT> - outputs SPACE 
+character</P>
+  <P><FONT face="Courier New, Courier">input</FONT> - user subroutine where the 
+  input buffer is processed</P>
+  <P></P></BLOCKQUOTE>
+<P>Using the SCI to output information is another way of testing and debugging 
+your program.</P>
+<P>
+<HR align=center>
+
+<P></P>
+<H3><A name=Interrupts></A>Interrupts</H3>
+<P>Hardware interrupts are very important features of computers. Computer 
+instructions are executed in a linear fashion. That is, instructions are fetched 
+and executed one after another. While it is possible for the program to take 
+different paths, only one task can be accomplished at any instance in time. 
+<B>Multi-tasking</B>, the resemblance of performing many tasks at the same time, 
+is in fact the CPU rapidly switching from one task to another. The CPU still 
+performs one task at a time.</P>
+<P><B>Interrupt</B> is the mechanism for pre-empting the attention of the CPU so 
+that another task can be dealt with, just as you may be called away from your 
+work temporarily when the phone rings. In a multi-tasking operating system, a 
+periodic timer interrupt can be used in order to perform many different tasks in 
+round-robin fashion. Interrupts are also used when a high priority event must be 
+dealt with in a timely fashion.</P>
+<P>In all cases of interrupts the flow of instruction execution is abruptly 
+suspended. The new task is performed and then program execution resumes at the 
+point where it was interrupted. For all of this to happen in a smooth manner the 
+CPU (and software) must be capable of two things. Firstly, the CPU must record 
+the address of the next instruction to be executed at the moment of 
+interruption. This is the only way that the CPU would be able to resume proper 
+program execution once the interrupting task was dealt with. Secondly, the 
+context of all resources, i.e., accumulators, registers and flags, must be saved 
+since these could be altered by the interrupting tasks.</P>
+<P>On the HC11, this is automatically taken care of by the CPU when an interrupt 
+occurs. The current program counter, accumulators and flags are stored on the <A 
+href="http://www.physics.mcmaster.ca/phy4d6/Lab/chapter4.htm#Stacks" 
+target=_blank>stack</A> before the interrupt is serviced.</P>
+<P><IMG height=215 hspace=15 src="4D6 Lab Manual - Chapter 3_files/istack.gif" 
+width=253 align=right vspace=10 border=0></P>
+<P>The first pair of bytes to be pushed on to the stack is the current contents 
+of the program counter, which would be the address of the next instruction to be 
+executed. This is followed by the Y index register, X index register, A 
+accumulator, B accumulator and Condition Code Register. The PC is then loaded 
+with a new address which is the address of the interrupt service routine 
+(ISR).</P>
+<P>At the completion of the ISR, the RTI (Return from Interrupt) instruction is 
+executed. This instruction pops all the registers off the stack in reverse order 
+so that the context of the CPU is restored to the state that it was at the time 
+of the interrupt.</P>
+<P>
+<H3>Interrupt Vectors</H3>
+<P>The HC11 is designed to handle interrupts from 32 different sources. This is 
+accomplished by reserving the last 64 bytes of program memory space from address 
+$FFC0 to $FFFF called the <B>interrupt vector table</B>. For each interrupt, a 
+pair of bytes in the table is used to store the address of the ISR. Here are the 
+assignments for the 21 interrupt vectors that are used.</P>
+<P>
+<TABLE cellSpacing=0 cellPadding=0 width="81%" bgColor=silver border=1>
+  <TBODY>
+  <TR>
+    <TD width="32%">
+      <P align=center><B><FONT face="Arial, Helvetica">Vector Address</FONT></B> 
+      </P></TD>
+    <TD width="68%"><B><FONT face="Arial, Helvetica">Interrupt 
+      Source</FONT></B></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFD6-FFD7</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">SCI - Serial Communications 
+      Interface</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFD8-FFD9</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">SPI - Serial Peripheral 
+      Interface</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFDA-FFDB</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Pulse Accumlator Input 
+      Edge</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFDC-FFDD</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Pulse Accumulator 
+      Overflow</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFDE-FFDF</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Timer Overflow</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFE0-FFE1</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Timer Output Compare 
+    5</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFE2-FFE3</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Timer Output Compare 
+    4</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFE4-FFE5</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Timer Output Compare 
+    3</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFE6-FFE7</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Timer Output Compare 
+    2</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFE8-FFE9</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Timer Output Compare 
+    1</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFEA-FFEB</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Timer Input Capture 
+    3</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFEC-FFED</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Timer Input Capture 
+    2</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFEE-FFEF</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Timer Input Capture 
+    1</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFF0-FFF1</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Real Time 
+  Interrupt</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFF2-FFF3</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">IRQ - External Interrupt 
+      Request</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFF4-FFF5</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">XIRQ - Non-Maskable External 
+      Interrupt Request</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFF6-FFF7</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">SWI - Software 
+      Interrupt</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFF8-FFF9</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">Illegal Opcode 
+  Trap</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFFA-FFFB</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">COP Failure</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFFC-FFFD</FONT> </P></TD>
+    <TD width="68%"><FONT face="Arial, Helvetica">COP Clock Monitor 
+    Fail</FONT></TD></TR>
+  <TR>
+    <TD width="32%">
+      <P align=center><FONT face="Arial, Helvetica">FFFE-FFFF</FONT> </P></TD>
+    <TD width="68%"><FONT 
+face="Arial, Helvetica">RESET</FONT></TD></TR></TBODY></TABLE></P>
+<P>Note that the last vector in the Interrupt Vector Table is the RESET vector. 
+In other words, the last two bytes of program space at location $FFFE-FFFF must 
+contain the address of the start of the program. When the MCU is reset the 
+starting address is fetched from the RESET vector location and is loaded into 
+the PC. 
+<H3>
+<HR align=center>
+<A name=Timer></A>Timer System</H3>
+<P>The HC11 contains a 16-bit programmable timer which is useful for many 
+applications involving timing, counting, frequency and period measurement and 
+waveform generation. The 8 pins assigned to PORTA are given specific 
+input/output functions shown in the table below. When not used specifically for 
+timer functions these pins can also be used as general purpose input or output 
+pins. Note that ports PA0, PA1 and PA2 are always inputs, PA4, PA5 and PA6 are 
+always outputs and PA3 and PA7 can be inputs or outputs.</P>
+<P align=center><IMG height=175 hspace=10 
+src="4D6 Lab Manual - Chapter 3_files/porta.gif" width=468 align=bottom vspace=5 
+border=0></P>
+<P>PA7 is used as the Pulse Accumulator Input which can be used to increment an 
+8-bit counter from an external source. PA6 - PA3 are Output Compare outputs 2 to 
+5 while PA2 - PA0 are Input Capture inputs 1 to 3. Note that PA3 can be 
+programmed to be either OC5 or IC4. A 1 written to bit-2 of PACTL will enable 
+IC4 function instead of OC5.</P>
+<P>PortA is available at connector P4 on the HC11 prototyping board. PA3-PA0 are 
+also used to input data from the 4 x 4 keypad connection at P1.</P>
+<H3>Programmable Timer</H3>
+<P>Discussion of the programmable timer system is simplifed by the following 
+block diagram. Since all the Output Compare functions are identical, only one 
+will be discussed. Similarly, only one Input Capture function will be 
+discussed.</P>
+<P>
+<P align=center><IMG height=61 src="4D6 Lab Manual - Chapter 3_files/timer.gif" 
+width=501 align=bottom border=0></P>
+<P>The MCU is clocked by a quartz crystal oscillator at a frequency of 8MHz. 
+This is divided by 4 to create the MCU E clock which determines the basic 
+machine cycle time. The E clock is further divided by a programmable prescaler 
+determined by the setting of two bits PR1 and PR0 of the Timer Interrupt Mask 
+Register 2 (TMSK2). The output of the prescaler increments the free running 
+16-bit counter TCNT. A timer overflow signal TOF is generated when the TCNT 
+overflows.</P>
+<P>
+<P align=center><IMG height=20 src="4D6 Lab Manual - Chapter 3_files/TMSK2.gif" 
+width=358 align=bottom border=0></P>
+<CENTER>
+<P><BR>
+<TABLE cellSpacing=0 cellPadding=0 width="35%" bgColor=silver border=0>
+  <TBODY>
+  <TR>
+    <TD width="33%">
+      <P align=center><B><FONT face="Arial, Helvetica">PR1</FONT></B> </P></TD>
+    <TD width="33%">
+      <P align=center><B><FONT face="Arial, Helvetica">PR0</FONT></B> </P></TD>
+    <TD width="34%">
+      <P align=center><B><FONT face="Arial, Helvetica">Divide by</FONT></B> 
+    </P></TD></TR>
+  <TR>
+    <TD width="33%">
+      <P align=center>0 </P></TD>
+    <TD width="33%">
+      <P align=center>0 </P></TD>
+    <TD width="34%">
+      <P align=center>1 </P></TD></TR>
+  <TR>
+    <TD width="33%">
+      <P align=center>0 </P></TD>
+    <TD width="33%">
+      <P align=center>1 </P></TD>
+    <TD width="34%">
+      <P align=center>4 </P></TD></TR>
+  <TR>
+    <TD width="33%">
+      <P align=center>1 </P></TD>
+    <TD width="33%">
+      <P align=center>0 </P></TD>
+    <TD width="34%">
+      <P align=center>8 </P></TD></TR>
+  <TR>
+    <TD width="33%">
+      <P align=center>1 </P></TD>
+    <TD width="33%">
+      <P align=center>1 </P></TD>
+    <TD width="34%">
+      <P align=center>16 </P></TD></TR></TBODY></TABLE></P></CENTER>
+<P>
+<TABLE cellSpacing=0 cellPadding=10 width="100%" bgColor=#ffffcc border=1>
+  <TBODY>
+  <TR>
+    <TD width="100%">Note that the Timer Prescaler settings PR1 and PR0 must 
+      be set within the first 64 E cycles after the MCU is reset. Make sure that 
+      this is one of the first tasks in your program.</TD></TR></TBODY></TABLE></P>
+<H3>Output Compare</H3>
+<P>The output compare feature is used to generate periodic waveforms or to 
+create timer functions. The 16-bit timer/counter TCNT is allowed to increment 
+continuously. An output compare register is chosen, for example, TOC2, and is 
+preset to a given 16-bit value. When the content of TCNT matches that of TOC2, 
+the flag OC2F in the register TFLG1 is set and a specified action is 
+automatically taken. This action can be to set the OC2 output line (PA6 in this 
+case), clear OC2 or toggle OC2. At the same time a Timer Output Compare 2 
+interrupt can be generated if the OC2I mask in TMSK1 had been set.</P>
+<P>
+<H3>Input Capture</H3>
+<P>The input capture feature can be used to make time, frequency or period 
+measurements. Firstly, an Input Capture register and associated input line is 
+chosen, for example, IC3 (which is PA0). Two bits (EDG3A and EDG3B) of Timer 
+Control Register 2 (TCTL2) are configured to capture on rising or falling edges 
+or both. When the specified edge is detected on IC3, the flag IC3F in the 
+register TFLG1 is set and the current content of TCNT is latched into the 16-bit 
+Input Capture register TIC3. A Timer Input Capture 3 interrupt is generated if 
+the IC3I mask in TMSK1 had been set.</P>
+<P>
+<H3>
+<HR align=center>
+Interrupt Latency, Service and Response Time</H3>
+<P>Interrupt latency is the time taken from the onset of the interrupting event 
+to the start of the interrupt service routine. This includes the time taken for 
+the CPU to respond to the interrupt, finish executing the current instruction, 
+save the registers on to the stack, and fetch the ISR address from the interrupt 
+vector table. The interrupt service time is the time taken by the ISR to service 
+the interrupt, that is, the length of time occupied by the ISR. The total 
+interrupt response time is the sum of the interrupt latency and the service. 
+This is a measure of how rapidly the system responds to interrupts and therefore 
+the maximum allowable rate of interrupts.</P>
+<P>In order to achieve the fastest response, it is important that all interrupt 
+service routines be executed as quickly as possible. Therefore ISR tasks should 
+be restricted to simply acknowledging and dismissing the interrupt flag. Any 
+involved tasks or calculations should be done outside of the ISR.</P>
+<P>
+<TABLE cellSpacing=0 cellPadding=10 width="100%" bgColor=#ccffcc border=1>
+  <TBODY>
+  <TR>
+    <TD width="100%">A Mac student riding a bicycle is struck down by an 
+      automobile. Someone calls for an ambulance which arrives on the scene in 
+      two minutes. By the above definition, the ambulance's latency is 2 
+      minutes. The student is in critical condition and the paramedics do only 
+      what is absolutely essential before rushing to the hospital. The time 
+      spent providing essential care and transportation to the hospital is 8 
+      minutes, which we call the service time. The total response time is 10 
+      minutes, during which time the ambulance is tied up and cannot respond to 
+      another incident.</TD></TR></TBODY></TABLE>
+<H3>
+<HR align=center>
+Timer Interrupt Example</H3>
+<P><A href="http://www.physics.mcmaster.ca/phy4d6/Lab/Source/example5.txt" 
+target=_blank>Example 5</A> demonstrates how to set up a Timer Output Compare 
+ISR.</P>
+<P>There are four steps required to setup the program to respond to timer 
+interrupts.</P>
+<OL>
+  <LI>Set up the required timer function. 
+  <LI>Provide the required ISR to handle and dismiss the interrupt. 
+  <LI>Set the address of the ISR in the interrupt vector table. 
+  <LI>Enable interrupts. </LI></OL>
+<P>In this example, an Output Compare function is used to create a timebase of 
+100ms, that is, the MCU will be interrupted 10 times each second. The program 
+begins by setting up the stack pointer and setting the prescaler for 
+divide-by-4. Interrupt from OC1 is unmasked and the interrupt mask flag in the 
+CCR is cleared by the CLI instruction.</P>
+<P>The address of the ISR declared as <B><FONT 
+face="Arial, Helvetica">toc1isr</FONT></B> is automatically written into the 
+interrupt vector table by the assembler and loader by the assembler directive 
+<B><FONT face="Arial, Helvetica">FDB toc1isr</FONT></B> at location $FFE8. Thus 
+when an OC1 interrupt is generated, the CPU fetches the address of the ISR from 
+the appropriate interrupt vector location and copies it to the PC. This causes 
+execution to be transferred to the ISR.</P>
+<P>In the ISR the OC1 register is incremented by 50,000 in preparation for the 
+next output compare. The interrupting flag is cleared and a software flag is set 
+which will be sensed by the main program. In this example, the E clock has a 
+period of 0.5 µs. Since the prescaler has been set for divide-by-4, the timer 
+register TCNT is incremented every 2 µs. A match with the OC1 register will 
+occur every 2 × 50,000 = 100,000 µs.</P>
+<P>Note that both the TCNT and OC1 registers will eventually overflow since the 
+maximum count is 65535. This does not affect the operation of this example. The 
+value 50,000 is added to the contents of the OC1 register using MOD 65536 
+arithmetic. 
+<H3>
+<HR align=center>
+</H3>
+<P><A href="http://www.physics.mcmaster.ca/phy4d6/Lab/ch3prob.htm">Problems</A> 
+<A href="http://www.physics.mcmaster.ca/phy4d6/Lab/home.htm">Home</A> <A 
+href="http://www.physics.mcmaster.ca/phy4d6/Lab/chapter4.htm">Next Chapter</A> 
+</P></BODY></HTML>
